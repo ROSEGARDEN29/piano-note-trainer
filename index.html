@@ -235,11 +235,66 @@ hr.cfg-divider {
 
 /* Panel lateral derecho */
 #side-panel {
-  width: 175px;
+  width: 310px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+/* Banner AADS */
+#banner-wrap {
+  width: 300px;
+  position: relative;
+  margin: 0 auto;
+  min-height: 270px; /* 250 iframe + enlace afuera */
+}
+#banner-wrap iframe {
+  display: block;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Pantalla de aviso móvil */
+#mobile-wall {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  z-index: 9999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  text-align: center;
+  gap: 20px;
+}
+#mobile-wall .mw-icon { font-size: 64px; }
+#mobile-wall h1 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+}
+#mobile-wall p {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.6;
+  max-width: 320px;
+}
+#mobile-wall .mw-badge {
+  background: var(--red);
+  color: var(--white);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: 'Crimson Pro', serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: .3px;
+}
+@media (max-width: 800px) {
+  #mobile-wall { display: flex; }
 }
 
 /* Feedback */
@@ -354,6 +409,21 @@ hr.cfg-divider {
 </head>
 <body>
 
+<!-- ── AVISO MÓVIL ── -->
+<div id="mobile-wall">
+  <div class="mw-icon">🎹</div>
+  <h1>Esta app está diseñada para computadora</h1>
+  <p>
+    <strong style="color:var(--white)">Lectura de Notas</strong> usa un piano de 88 teclas
+    y pentagramas que requieren una pantalla amplia para practicar correctamente.<br><br>
+    Ábrela desde tu computadora para disfrutar la experiencia completa.
+  </p>
+  <div class="mw-badge">🌹 by Rosas y Gardenias</div>
+  <p style="font-size:12px;color:var(--dgray);margin-top:8px">
+    rosegarden29.github.io/piano-note-trainer/
+  </p>
+</div>
+
 <div id="header">
   <div>
     <div id="header-title">🎹 Lectura de Notas</div>
@@ -422,6 +492,20 @@ hr.cfg-divider {
         <div id="hint-box"></div>
         <button class="side-btn" id="btn-labels">👁 Etiquetas: ON</button>
         <button class="side-btn" id="btn-config">⚙&nbsp;&nbsp;Configurar</button>
+
+        <!-- ── BANNER A-ADS ── -->
+        <div id="banner-wrap">
+          <!-- BEGIN AADS AD UNIT 2442121 -->
+          <iframe data-aa='2442121' src='//ad.a-ads.com/2442121/?size=300x250&title_color=ff0000'
+                  style='border:0; padding:0; width:300px; height:250px; overflow:hidden; display:block; margin:auto; border-radius:6px;'
+                  id="aads-iframe"></iframe>
+          <div style="width:300px;margin:auto;position:relative;">
+            <a target="_blank"
+               style="display:inline-block;font-size:11px;color:#263238;padding:3px 8px;background:#F8F8F9;text-decoration:none;border-radius:0 0 4px 4px;"
+               href="https://aads.com/campaigns/new/?source_id=2442121&source_type=ad_unit&partner=2442121">Advertise here</a>
+          </div>
+          <!-- END AADS AD UNIT 2442121 -->
+        </div>
       </div>
     </div>
     <div id="history-row">
@@ -1040,6 +1124,8 @@ const state = {
   lastAnswer:     null,
   showLabels:     true,
   queue:          new AlternatingQueue(),
+  attemptCount:   0,       // total de intentos (para rotar banner)
+  cameFromConfig: false,   // flag: viene de configuración → rotar banner
 };
 
 function getActiveClefs() { return autoClefs(state.activeOctaves); }
@@ -1063,6 +1149,15 @@ function getNotesPool() {
     }
   }
   return [...pool].map(x=>JSON.parse(x));
+}
+
+// ── Banner rotation ──────────────────────────────────────────────────────────
+function refreshBanner() {
+  const iframe = document.getElementById("aads-iframe");
+  if (!iframe) return;
+  // Forzar recarga del iframe cambiando el src con un timestamp de cache-bust
+  const base = "//ad.a-ads.com/2442121/?size=300x250&title_color=ff0000";
+  iframe.src = base + "&_=" + Date.now();
 }
 
 function newNote() {
@@ -1113,6 +1208,9 @@ function handlePianoClick(canvasX, canvasY) {
   if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
 
   state.total++;
+  state.attemptCount++;
+  // Rotar banner cada 10 intentos
+  if (state.attemptCount % 10 === 0) refreshBanner();
   if (clicked[0]===state.currentNote[0] && clicked[1]===state.currentNote[1]) {
     state.result    = "correct";
     state.score++;
@@ -1350,7 +1448,8 @@ function updateCfgWarn() {
 // ══════════════════════════════════════════════════════════════════════════════
 // NAVEGACIÓN DE PANTALLAS
 // ══════════════════════════════════════════════════════════════════════════════
-function showConfig() {
+function showConfig(fromGame) {
+  if (fromGame) state.cameFromConfig = true;
   state.screen = "config";
   document.getElementById("config-screen").style.display = "flex";
   document.getElementById("game-screen").style.display   = "none";
@@ -1365,6 +1464,8 @@ function showGame() {
   document.getElementById("config-screen").style.display = "none";
   document.getElementById("game-screen").style.display   = "block";
   document.getElementById("header-stats").style.display  = "flex";
+  // Rotar banner si viene de configuración
+  if (state.cameFromConfig) { refreshBanner(); state.cameFromConfig = false; }
   // Build keys first with a rough canvas width, then newNote sets currentNote,
   // then resizeCanvas recalculates with the real note height.
   const area = document.getElementById("staff-area");
@@ -1387,7 +1488,7 @@ document.getElementById("btn-start").onclick = () => {
   showGame();
 };
 
-document.getElementById("btn-config").onclick = () => showConfig();
+document.getElementById("btn-config").onclick = () => showConfig(true);
 
 document.getElementById("btn-hint").onclick = () => {
   if (state.result!==null) return;
@@ -1431,7 +1532,7 @@ document.getElementById("main-canvas").addEventListener("click", (e) => {
 // Teclado
 document.addEventListener("keydown", (e) => {
   if (state.screen==="config") return;
-  if (e.key==="Escape") { showConfig(); return; }
+  if (e.key==="Escape") { showConfig(true); return; }
   if (e.key==="ArrowRight" || e.key===" ") {
     e.preventDefault();
     if (state.result!==null) { newNote(); updateClefLabel(); }

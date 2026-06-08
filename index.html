@@ -6,7 +6,7 @@
 
 <!-- ── SEO BÁSICO ── -->
 <title>Lectura de Notas de Piano Online Gratis — Aprende Solfeo | Rosas y Gardenias</title>
-<meta name="description" content="Practica la lectura de notas musicales en el piano de forma interactiva y gratuita. Ejercicios de solfeo con clave de Sol y Fa, pentagrama real y piano de 88 teclas. Ideal para estudiantes y profesores de música."/>
+<meta name="description" content="Practica lectura de notas musicales en el piano de forma interactiva y gratuita. Ejercicios de solfeo con clave de Sol y Fa, pentagrama real y 88 teclas."/>
 <meta name="keywords" content="lectura de notas piano, solfeo online, aprender notas musicales, clave de sol, clave de fa, pentagrama, ejercicios de solfeo, piano online, notas del piano, teoría musical, aprender piano gratis, entrenamiento musical, music note reading, piano notes trainer"/>
 <meta name="author" content="Rosas y Gardenias"/>
 <meta name="robots" content="index, follow"/>
@@ -20,11 +20,15 @@
 <meta property="og:title"       content="Lectura de Notas de Piano Online Gratis"/>
 <meta property="og:description" content="Practica solfeo con un piano de 88 teclas y pentagramas reales. Ejercicios interactivos de clave de Sol y Fa. ¡Gratis!"/>
 <meta property="og:locale"      content="es_ES"/>
+<meta property="og:image"       content="https://rosegarden29.github.io/piano-note-trainer/og-image.png"/>
+<meta property="og:image:width"  content="1200"/>
+<meta property="og:image:height" content="630"/>
 
 <!-- ── TWITTER CARD ── -->
 <meta name="twitter:card"        content="summary"/>
 <meta name="twitter:title"       content="Lectura de Notas de Piano — Solfeo Online Gratis"/>
 <meta name="twitter:description" content="Aprende a leer notas musicales en el piano. Ejercicios interactivos con pentagrama real y piano de 88 teclas."/>
+<meta name="twitter:image"       content="https://rosegarden29.github.io/piano-note-trainer/og-image.png"/>
 
 <!-- ── VERIFICACIÓN GOOGLE ── -->
 <meta name="google-site-verification" content="google3bed89b8f7dc5dca"/>
@@ -54,7 +58,6 @@
 }
 </script>
 
-<title>Lectura de Notas de Piano Online Gratis — Aprende Solfeo | Rosas y Gardenias</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap');
 
@@ -178,7 +181,7 @@ body {
 }
 .oct-btn {
   width: 82px;
-  height: 38px;
+  height: 44px;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--white);
@@ -189,15 +192,26 @@ body {
   position: relative;
   transition: background .15s, color .15s, border-color .15s, transform .08s;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0;
 }
+.oct-btn .oct-extra {
+  display: block;
+  font-size: 8px;
+  color: var(--gray);
+  line-height: 1;
+  margin-top: 1px;
+}
+.oct-btn.active .oct-extra { color: #a0a2ac; }
 .oct-btn .oct-zone {
   position: absolute;
   bottom: 3px;
   right: 5px;
-  font-size: 9px;
+  font-size: 8px;
   color: var(--gray);
+  line-height: 1;
 }
 .oct-btn.active {
   background: var(--black);
@@ -423,6 +437,72 @@ hr.cfg-divider {
   border-radius: 8px;
 }
 
+/* ── ACCIDENTALES RADIO ─────────────────────────────────────────────────── */
+.acc-section-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--black);
+  text-align: center;
+  margin-bottom: 6px;
+}
+.acc-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0 auto 4px;
+  max-width: 420px;
+}
+.acc-radio-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  cursor: pointer;
+  transition: background .12s, border-color .12s;
+  user-select: none;
+}
+.acc-radio-row:hover { background: #f0f0f4; }
+.acc-radio-row.selected {
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+.acc-radio-row.selected .acc-radio-dot {
+  border-color: var(--white);
+}
+.acc-radio-row.selected .acc-radio-dot::after {
+  background: var(--white);
+}
+.acc-radio-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--dgray);
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color .12s;
+}
+.acc-radio-dot::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background .12s;
+}
+.acc-radio-row.selected .acc-radio-dot::after { background: var(--white); }
+.acc-label { font-size: 13px; flex: 1; }
+.acc-badge {
+  font-size: 11px;
+  color: var(--gray);
+  font-family: 'DM Mono', monospace;
+}
+.acc-radio-row.selected .acc-badge { color: #a0a2ac; }
+
 /* ── HISTORY ─────────────────────────────────────────────────────────────── */
 #history-row {
   display: flex;
@@ -506,15 +586,50 @@ hr.cfg-divider {
   <div id="config-screen">
     <div id="config-card">
       <div class="cfg-section-title">Octavas a practicar</div>
-      <div class="cfg-hint">Octavas 1–3 → Clave de Fa &nbsp;&nbsp;&nbsp; Octavas 4–6 → Clave de Sol</div>
-      <div class="cfg-hint">Solo octavas contiguas. Haz clic en los extremos del rango para añadir o quitar.</div>
-      <div class="cfg-hint-red" id="cfg-clefs-active">Claves activas: Clave de Fa + Clave de Sol</div>
+      <div class="cfg-hint">Octavas 1–3 → Clave de Fa &nbsp;&nbsp;&nbsp; Octavas 4–7 → Clave de Sol</div>
+      <div class="cfg-hint">Oct 1 solo incluye Si1 · Oct 7 solo incluye Do7 &nbsp;|&nbsp; Solo octavas contiguas. Haz clic en los extremos del rango para añadir o quitar.</div>
+      <div class="cfg-hint-red" id="cfg-clefs-active">Claves activas: Clave de Sol + Clave de Fa</div>
       <div id="oct-grid"></div>
       <hr class="cfg-divider"/>
       <div class="cfg-hints-row">
-        💡 Sugerencia: Oct 2+3 (Fa) &nbsp;ó&nbsp; Oct 4+5 (Sol) &nbsp;ó&nbsp; Oct 3+4 (ambas) &nbsp;ó&nbsp; Oct 5+6 (Sol agudo)<br>
+        💡 Sugerencia: Oct 2+3 (Fa) &nbsp;ó&nbsp; Oct 4+5 (Sol) &nbsp;ó&nbsp; Oct 3+4 (ambas) &nbsp;ó&nbsp; Oct 6+7 (Sol agudo) &nbsp;ó&nbsp; Oct 1+2 (Fa grave)<br>
         ⌨&nbsp; → / Espacio = siguiente nota &nbsp;&nbsp; H = ver respuesta &nbsp;&nbsp; ESC = volver
       </div>
+      <hr class="cfg-divider"/>
+
+      <!-- ── ACCIDENTALES ── -->
+      <div class="acc-section-title">Tipo de notas a practicar</div>
+      <div class="acc-grid" id="acc-grid">
+        <div class="acc-radio-row selected" data-acc="natural" onclick="selectAcc('natural')">
+          <div class="acc-radio-dot"></div>
+          <span class="acc-label">Solo naturales</span>
+          <span class="acc-badge">Do Re Mi Fa Sol La Si</span>
+        </div>
+        <div class="acc-radio-row" data-acc="sharp" onclick="selectAcc('sharp')">
+          <div class="acc-radio-dot"></div>
+          <span class="acc-label">Solo sostenidos <strong>#</strong></span>
+          <span class="acc-badge">Do# Re# Fa# Sol# La#</span>
+        </div>
+        <div class="acc-radio-row" data-acc="flat" onclick="selectAcc('flat')">
+          <div class="acc-radio-dot"></div>
+          <span class="acc-label">Solo bemoles <strong>♭</strong></span>
+          <span class="acc-badge">Re♭ Mi♭ Sol♭ La♭ Si♭</span>
+        </div>
+        <div class="acc-radio-row" data-acc="sharps_flats" onclick="selectAcc('sharps_flats')">
+          <div class="acc-radio-dot"></div>
+          <span class="acc-label">Sostenidos y bemoles</span>
+          <span class="acc-badge"># y ♭ mezclados</span>
+        </div>
+        <div class="acc-radio-row" data-acc="all" onclick="selectAcc('all')">
+          <div class="acc-radio-dot"></div>
+          <span class="acc-label">Todos los tipos</span>
+          <span class="acc-badge">naturales + # + ♭</span>
+        </div>
+      </div>
+      <div class="cfg-hint" id="acc-hint" style="margin-bottom:8px">
+        💡 Etapa 1 — Domina las notas naturales primero
+      </div>
+
       <hr class="cfg-divider"/>
       <div class="cfg-warn" id="cfg-warn"></div>
       <button id="btn-start">¡Practicar!</button>
@@ -529,7 +644,7 @@ hr.cfg-divider {
     <div id="game-top">
       <div id="staff-area">
         <div class="staff-label" id="clef-label">🎵 Clave de Sol</div>
-        <canvas id="main-canvas"></canvas>
+        <canvas id="main-canvas" role="img" aria-label="Pentagrama con nota musical a identificar"></canvas>
         <div id="pool-info"></div>
       </div>
       <div id="side-panel">
@@ -548,6 +663,7 @@ hr.cfg-divider {
         <div id="banner-wrap">
           <!-- BEGIN AADS AD UNIT 2442121 -->
           <iframe data-aa='2442121' src='//ad.a-ads.com/2442121/?size=300x250&title_color=ff0000'
+                  title="Publicidad"
                   style='border:0; padding:0; width:300px; height:250px; overflow:hidden; display:block; margin:auto; border-radius:6px;'
                   id="aads-iframe"></iframe>
           <div style="width:300px;margin:auto;position:relative;">
@@ -575,40 +691,80 @@ hr.cfg-divider {
 const NOTE_NAMES    = ["Do","Re","Mi","Fa","Sol","La","Si"];
 const NOTE_SEMITONE = {Do:0,Re:2,Mi:4,Fa:5,Sol:7,La:9,Si:11};
 
+// ── Accidentales — mapas completos ──────────────────────────────────────────
+// Cada sostenido: [nombreAccidental, nombreBase, semitonos sobre la base]
+// El accidental se dibuja en la misma posición de pentagrama que la nota BASE
+// pero con símbolo # o ♭ delante de la cabeza
+const SHARPS = [
+  // [nombreAcc, nombreBase, octavaOffset]  (offset=0 casi siempre, excepto Si#=Do)
+  {acc:"Do#", base:"Do", oct:0, symbol:"#"},
+  {acc:"Re#", base:"Re", oct:0, symbol:"#"},
+  {acc:"Fa#", base:"Fa", oct:0, symbol:"#"},
+  {acc:"Sol#",base:"Sol",oct:0, symbol:"#"},
+  {acc:"La#", base:"La", oct:0, symbol:"#"},
+];
+const FLATS = [
+  // Bemoles: Re♭=Do#, Mi♭=Re#, Sol♭=Fa#, La♭=Sol#, Si♭=La#
+  // Se dibujan en la posición de la nota que BAJAN (Re→Re♭, Mi→Mi♭, etc.)
+  {acc:"Re♭", base:"Re", oct:0, symbol:"♭"},
+  {acc:"Mi♭", base:"Mi", oct:0, symbol:"♭"},
+  {acc:"Sol♭",base:"Sol",oct:0, symbol:"♭"},
+  {acc:"La♭", base:"La", oct:0, symbol:"♭"},
+  {acc:"Si♭", base:"Si", oct:0, symbol:"♭"},
+];
+
+// Semitono de cada accidental para noteToFreq
+const ACC_SEMITONE = {
+  "Do#":1, "Re#":3, "Fa#":6, "Sol#":8, "La#":10,
+  "Re♭":1, "Mi♭":3, "Sol♭":6,"La♭":8,  "Si♭":10,
+};
+
 function noteToFreq(name, octave) {
-  const semi = NOTE_SEMITONE[name] + (octave + 1) * 12;
+  // Soporta naturales y accidentales
+  let semi;
+  if (NOTE_SEMITONE[name] !== undefined) {
+    semi = NOTE_SEMITONE[name] + (octave + 1) * 12;
+  } else if (ACC_SEMITONE[name] !== undefined) {
+    semi = ACC_SEMITONE[name] + (octave + 1) * 12;
+  } else {
+    semi = 0; // fallback
+  }
   return 440.0 * Math.pow(2, (semi - 69) / 12);
 }
 
 // ── Sets de notas por clave ──────────────────────────────────────────────────
 const TREBLE_SET = new Set();
-for (const n of NOTE_NAMES)                                        TREBLE_SET.add(n+"|4");
-for (const n of NOTE_NAMES) if (NOTE_NAMES.indexOf(n)<=NOTE_NAMES.indexOf("Sol")) TREBLE_SET.add(n+"|5");
-for (const n of NOTE_NAMES) if (NOTE_NAMES.indexOf(n)<=NOTE_NAMES.indexOf("Mi"))  TREBLE_SET.add(n+"|6");
-for (const n of NOTE_NAMES) if (NOTE_NAMES.indexOf(n)>=NOTE_NAMES.indexOf("Fa"))  TREBLE_SET.add(n+"|6");
-for (const n of NOTE_NAMES)                                        TREBLE_SET.add(n+"|7");
-TREBLE_SET.add("Do|8");
+for (const n of NOTE_NAMES)                                                           TREBLE_SET.add(n+"|4");
+for (const n of NOTE_NAMES) if (NOTE_NAMES.indexOf(n)<=NOTE_NAMES.indexOf("Sol"))    TREBLE_SET.add(n+"|5");
+for (const n of NOTE_NAMES) if (NOTE_NAMES.indexOf(n)<=NOTE_NAMES.indexOf("La"))     TREBLE_SET.add(n+"|6");
+// Oct 7 pedagógica: solo Do7 (5 líneas adicionales arriba — límite en repertorio avanzado)
+// Re7 y superiores tienen 6-9 líneas adicionales — impracticables en cualquier método
+TREBLE_SET.add("Do|7");
 
 const BASS_SET = new Set();
-BASS_SET.add("La|0"); BASS_SET.add("Si|0");
-BASS_SET.add("La|1"); BASS_SET.add("Si|1");
+// Oct 1 pedagógica: solo Si1 (2 líneas adicionales abajo — límite aceptable)
+// Do1–La1 requieren 3–5 líneas adicionales y La0/Si0 requieren 6 — impracticables
+BASS_SET.add("Si|1");
+// Oct 2 completa
+for (const n of NOTE_NAMES) BASS_SET.add(n+"|2");
+// Oct 3 completa
 for (const n of NOTE_NAMES) BASS_SET.add(n+"|3");
-["Sol","La","Si"].forEach(n => BASS_SET.add(n+"|2"));
-["Fa","Mi","Re","Do"].forEach(n => BASS_SET.add(n+"|2"));
 
 function parsePair(s) { const p = s.split("|"); return [p[0], parseInt(p[1])]; }
 
 function clefsForOctave(oct) {
   const c = [];
-  if ([...TREBLE_SET].some(s=>{const[,o]=parsePair(s);return o===oct && o!==0 && o!==8;})) c.push("treble");
-  if ([...BASS_SET  ].some(s=>{const[,o]=parsePair(s);return o===oct && o!==0 && o!==8;})) c.push("bass");
+  if ([...TREBLE_SET].some(s=>{const[,o]=parsePair(s);return o===oct;})) c.push("treble");
+  if ([...BASS_SET  ].some(s=>{const[,o]=parsePair(s);return o===oct;})) c.push("bass");
   return c;
 }
 
 function autoClefs(octaves) {
   const s = new Set();
   for (const o of octaves) clefsForOctave(o).forEach(c=>s.add(c));
-  return [...s].sort();
+  // Orden convencional: treble (Sol) antes que bass (Fa)
+  const order = ["treble","bass"];
+  return order.filter(c=>s.has(c));
 }
 
 // ── Posición en pentagrama ───────────────────────────────────────────────────
@@ -677,7 +833,11 @@ function synthPiano(freq, duration=1.6) {
   src.start();
 }
 
+let _lastNoteTime = 0;
 function playNote(name, octave) {
+  const now = Date.now();
+  if (now - _lastNoteTime < 80) return; // throttle: máx 1 nota cada 80ms
+  _lastNoteTime = now;
   try { synthPiano(noteToFreq(name, octave)); } catch(e){}
 }
 
@@ -723,9 +883,11 @@ class AlternatingQueue {
     const items = pool.filter(x=>x[2]===clef);
     if(!items.length){this.decks[clef]=[]; return;}
     // Agrupar por posición staff (bucket cada 3 semiespacios)
+    // Para accidentales usamos la nota BASE para calcular la posición (item[4] || item[0])
     const groups={};
     for(const item of items){
-      const step=noteToStaffPos(item[0],item[1],clef);
+      const staffName = item[4] || item[0]; // base para accidentales, nombre para naturales
+      const step=noteToStaffPos(staffName,item[1],clef);
       const bk=Math.floor(step/3);
       if(!groups[bk]) groups[bk]=[];
       groups[bk].push(item);
@@ -843,19 +1005,21 @@ function drawBassClef(ctx, x, staffTop, gap, color) {
     const gh = gap * 3.5;
     ctx.fillText(glyph, x + 2, faLineY + gh * 0.62);
   } else {
-    // Primitivas fallback
-    const faLineY = staffTop + 3*gap;
-    const cx2 = x + 14;
-    const r = Math.round(gap * 1.4);
-    ctx.lineWidth = 3;
+    // Primitivas fallback: arco y dos puntos centrados en la 4ª línea (Fa)
+    // En este pentagrama: 5 líneas, top=staffTop, bottom=staffTop+4*gap
+    // La 4ª línea desde abajo = staffTop + 1*gap
+    const faLineY = staffTop + gap;
+    const cx2 = x + 18;
+    const r = Math.round(gap * 1.3);
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.arc(cx2, faLineY, r, Math.PI*0.25, Math.PI*1.75);
+    ctx.arc(cx2, faLineY, r, Math.PI*0.3, Math.PI*1.7);
     ctx.stroke();
-    const dotX = cx2 + Math.round(r*0.6);
-    const dotR = Math.max(3, gap/5);
+    const dotX = cx2 + r + 4;
+    const dotR = Math.max(2, gap/6);
     ctx.fillStyle = col;
-    ctx.beginPath(); ctx.arc(dotX, faLineY - gap/2, dotR, 0, 2*Math.PI); ctx.fill();
-    ctx.beginPath(); ctx.arc(dotX, faLineY + gap/2, dotR, 0, 2*Math.PI); ctx.fill();
+    ctx.beginPath(); ctx.arc(dotX, faLineY - gap*0.5, dotR, 0, 2*Math.PI); ctx.fill();
+    ctx.beginPath(); ctx.arc(dotX, faLineY + gap*0.5, dotR, 0, 2*Math.PI); ctx.fill();
   }
   ctx.restore();
 }
@@ -865,8 +1029,13 @@ function staffSurfaceHeight(note, clef) {
   const pad=8, extra=3, staffPx=4*LINE_GAP;
   let la=0, lb=0;
   if (note) {
-    const step = noteToStaffPos(note[0], note[1], clef);
-    if (step < -2) la = Math.max(0, Math.floor(-step/2));
+    // Para accidentales usar el nombre base para calcular la posición en el pentagrama
+    const staffName = (state.currentAccType && state.currentAccType !== "natural" &&
+                       state.currentBaseName &&
+                       note[0]===state.currentNote?.[0] && note[1]===state.currentNote?.[1])
+                     ? state.currentBaseName : note[0];
+    const step = noteToStaffPos(staffName, note[1], clef);
+    if (step <= -2) la = Math.max(0, Math.floor((-step)/2));
     if (step >= 10) lb = Math.max(0, Math.floor((step-8)/2));
   }
   const et = Math.max(extra, la+2);
@@ -874,15 +1043,20 @@ function staffSurfaceHeight(note, clef) {
   return pad + et*LINE_GAP + staffPx + eb*LINE_GAP + pad + 28;
 }
 
-function drawStaff(ctx, dx, dy, clef, note, result, dimmed, showLabels) {
-  const surfW = 545;
+function drawStaff(ctx, dx, dy, clef, note, result, dimmed, showLabels, canvasW) {
+  // surfW dinámico: usa el canvas real o 545 como mínimo útil
+  const surfW = Math.max(380, Math.min(545, (canvasW || 545) - dx));
   const surfH = staffSurfaceHeight(note, clef);
   const pad = 8, extra = 3;
 
   let la=0, lb=0;
   if (note) {
-    const step = noteToStaffPos(note[0], note[1], clef);
-    if (step < -2) la = Math.max(0, Math.floor(-step/2));
+    // Usar nombre base para accidentales, igual que en el bloque de dibujo
+    const sName = (state.currentAccType !== "natural" && state.currentBaseName &&
+                   note[0]===state.currentNote?.[0] && note[1]===state.currentNote?.[1])
+                  ? state.currentBaseName : note[0];
+    const step = noteToStaffPos(sName, note[1], clef);
+    if (step <= -2) la = Math.max(0, Math.floor((-step)/2));
     if (step >= 10) lb = Math.max(0, Math.floor((step-8)/2));
   }
   const et = Math.max(extra, la+2);
@@ -929,18 +1103,27 @@ function drawStaff(ctx, dx, dy, clef, note, result, dimmed, showLabels) {
 
   if (note) {
     const [name, octave] = note;
-    const step  = noteToStaffPos(name, octave, clef);
+    // Para accidentales, la posición en el pentagrama se calcula con la nota BASE
+    const accType  = state.currentAccType  || "natural";
+    const baseName = state.currentBaseName || name;
+    const staffName = (accType !== "natural") ? baseName : name;
+    const step  = noteToStaffPos(staffName, octave, clef);
     const noteY = staffTop + step * HALF;
     const noteX = sx0 + 195;
     const midC  = isMiddleC(name, octave);
+
+    // Ancho de líneas adicionales: cubre la cabeza + el símbolo accidental a su izquierda
+    const ledgerExtra = (accType !== "natural") ? 14 : 0;
+    const ledgerL = noteX - 15 - ledgerExtra;
+    const ledgerR = noteX + 15;
 
     // Líneas adicionales encima
     let ls = -2;
     ctx.strokeStyle = lineCol; ctx.lineWidth = 2;
     while (ls >= step) {
       ctx.beginPath();
-      ctx.moveTo(noteX-15, staffTop+ls*HALF);
-      ctx.lineTo(noteX+15, staffTop+ls*HALF);
+      ctx.moveTo(ledgerL, staffTop+ls*HALF);
+      ctx.lineTo(ledgerR, staffTop+ls*HALF);
       ctx.stroke();
       ls -= 2;
     }
@@ -948,8 +1131,8 @@ function drawStaff(ctx, dx, dy, clef, note, result, dimmed, showLabels) {
     ls = 10;
     while (ls <= step) {
       ctx.beginPath();
-      ctx.moveTo(noteX-15, staffTop+ls*HALF);
-      ctx.lineTo(noteX+15, staffTop+ls*HALF);
+      ctx.moveTo(ledgerL, staffTop+ls*HALF);
+      ctx.lineTo(ledgerR, staffTop+ls*HALF);
       ctx.stroke();
       ls += 2;
     }
@@ -970,6 +1153,18 @@ function drawStaff(ctx, dx, dy, clef, note, result, dimmed, showLabels) {
     else if (midC)               nc = C.doCentral;
     else                         nc = C.black;
 
+    // Símbolo accidental (# o ♭) delante de la cabeza
+    if (accType !== "natural") {
+      const sym = accType; // "#" o "♭"
+      // Color del símbolo = mismo que la cabeza
+      ctx.fillStyle = nc;
+      ctx.font = `bold ${Math.round(LINE_GAP * 1.4)}px 'Crimson Pro', serif`;
+      const symW = ctx.measureText(sym).width;
+      const symX = noteX - 11 - symW - 3; // a la izquierda de la cabeza
+      const symY = noteY + LINE_GAP * 0.55; // centrado verticalmente
+      ctx.fillText(sym, symX, symY);
+    }
+
     // Cabeza (elipse)
     ctx.fillStyle  = nc;
     ctx.strokeStyle= C.black;
@@ -978,10 +1173,10 @@ function drawStaff(ctx, dx, dy, clef, note, result, dimmed, showLabels) {
     ctx.ellipse(noteX, noteY, 11, 6.5, 0, 0, 2*Math.PI);
     ctx.fill(); ctx.stroke();
 
-    // Plica
+    // Plica: notas en la 3ª línea o por encima → plica hacia abajo; por debajo → hacia arriba
     const STEM_LEN = 38;
     ctx.strokeStyle = nc; ctx.lineWidth = 2;
-    if (step < 4) {
+    if (step <= 4) {
       const sy0=noteY, sy1=Math.min(noteY+STEM_LEN, surfH-6);
       ctx.beginPath(); ctx.moveTo(noteX-11,sy0); ctx.lineTo(noteX-11,sy1); ctx.stroke();
     } else {
@@ -1020,20 +1215,22 @@ function drawStaff(ctx, dx, dy, clef, note, result, dimmed, showLabels) {
 
 // ── Piano ─────────────────────────────────────────────────────────────────────
 function buildPianoKeys(activeOctaves) {
-  // Fiel al Python: La0,Si0 | Oct1-7 | Do8
-  // Calculamos cuántas teclas blancas: 2(oct0) + 7*7 + 1(Do8) = 52
+  // Piano de 88 teclas: La0,Si0 | Oct1–7 | Do8
+  // La0,Si0 y Do8 se muestran siempre como teclas inactivas (fuera del rango pedagógico)
+  // Teclas blancas totales: 2(oct0) + 7×7(oct1-7) + 1(Do8) = 52
   const active = new Set(activeOctaves);
   const keys   = [];
 
   // Ancho dinámico según canvas
-  const canvas  = document.getElementById("main-canvas");
-  const cw      = canvas.width || 980;
+  const canvas  = DOM.canvas;
+  const cw      = (canvas && canvas.width) || 980;
   const totalWh = 2 + 7*7 + 1; // 52 teclas blancas
   const whiteW  = Math.max(14, Math.floor((cw - 4) / totalWh));
   const blackW  = Math.max(8, Math.floor(whiteW * 0.58));
   const blackH  = Math.floor(108 * 0.60);
 
-  const oct0Active = active.has(1);
+  // La0, Si0, Do8: siempre inactivas (fuera del rango pedagógico de la app)
+  const oct0Active = false;
   let x = 2;
 
   // Octava 0 parcial
@@ -1056,8 +1253,8 @@ function buildPianoKeys(activeOctaves) {
     }
     x += 3;
   }
-  // Do8
-  const oct8Active = active.has(7);
+  // Do8: siempre inactivo (fuera del rango pedagógico de la app)
+  const oct8Active = false;
   keys.push({name:"Do", octave:8, x, w:whiteW, black:false, active:oct8Active});
 
   // Teclas negras oct 1–7
@@ -1126,14 +1323,14 @@ function drawPiano(ctx, keys, pianoY, pianoH, highlight, wrongKey, showLabels) {
     if (oct===0) continue;
     if (oct===8) continue;
     const grp = wk.filter(k=>k.octave===oct);
-    const allGrp = oct===1 ? [...wk.filter(k=>k.octave===0), ...grp] : grp;
-    if (!allGrp.length) continue;
-    const cx2 = (allGrp[0].x + allGrp[allGrp.length-1].x + allGrp[allGrp.length-1].w) / 2;
+    if (!grp.length) continue;
+    const cx2 = (grp[0].x + grp[grp.length-1].x + grp[grp.length-1].w) / 2;
     const isAct = grp[0]?.active;
     ctx.fillStyle = isAct ? C.dgray : "#b4b4b4";
     ctx.font = "10px 'DM Mono', monospace";
-    const lbl = oct!==7 ? `Oct ${oct}` : `Oct ${oct}+8`;
-    ctx.fillText(lbl, cx2 - ctx.measureText(lbl).width/2, pianoY - 18);
+    const lbl = `Oct ${oct}`;
+    const labelY = Math.max(12, pianoY - 18);
+    ctx.fillText(lbl, cx2 - ctx.measureText(lbl).width/2, labelY);
   }
 }
 
@@ -1177,53 +1374,202 @@ const state = {
   queue:          new AlternatingQueue(),
   attemptCount:   0,       // total de intentos (para rotar banner)
   cameFromConfig: false,   // flag: viene de configuración → rotar banner
+  accMode:        "natural", // "natural"|"sharp"|"flat"|"sharps_flats"|"all"
+  currentAccType:  "natural", // "#"|"♭"|"natural"
+  currentBaseName: null,      // nombre base del accidental (e.g. "Do" para "Do#")
+  _poolCache:      null,      // cache del pool actual — se invalida al cambiar config
 };
 
 function getActiveClefs() { return autoClefs(state.activeOctaves); }
 
 function getNotesPool() {
+  if (state._poolCache) return state._poolCache;
+  state._poolCache = _buildNotesPool();
+  return state._poolCache;
+}
+
+function invalidatePool() { state._poolCache = null; }
+
+function _buildNotesPool() {
   const pool = new Set();
   const ac   = getActiveClefs();
   const aSet = new Set(state.activeOctaves);
-  if (ac.includes("treble")) {
-    for (const s of TREBLE_SET) {
+  const mode = state.accMode || "natural";
+
+  // ── Función interna: añadir nota natural al pool ──
+  function addNatural(n, o, clef) { pool.add(JSON.stringify([n,o,clef,"natural",null])); }
+
+  // ── Función interna: añadir accidental al pool ──
+  // item: {acc, base, oct(offset), symbol}  clef, baseOctave
+  function addAcc(item, baseOctave, clef) {
+    pool.add(JSON.stringify([item.acc, baseOctave, clef, item.symbol, item.base]));
+  }
+
+  // ── Notas naturales de cada clave ──
+  function addNaturalsForClef(clef, noteSet) {
+    for (const s of noteSet) {
       const [n,o] = parsePair(s);
-      if (aSet.has(o)) pool.add(JSON.stringify([n,o,"treble"]));
-      else if (o===8 && aSet.has(7)) pool.add(JSON.stringify([n,o,"treble"]));
+      if (aSet.has(o)) addNatural(n, o, clef);
     }
+  }
+
+  // ── Accidentales: generarlos desde las naturales activas del pool ──
+  // Para cada nota natural en el pool, generamos sus accidentales si corresponde
+  // La octava del accidental es la misma que la de la nota base
+  // EXCEPCIÓN: Si# (enarmónico de Do) no se incluye para evitar confusión pedagógica
+  function addAccidentalsForClef(clef, accList) {
+    const baseSet = clef==="treble" ? TREBLE_SET : BASS_SET;
+    for (const s of baseSet) {
+      const [baseName, baseOct] = parsePair(s);
+      if (!aSet.has(baseOct)) continue;
+      for (const item of accList) {
+        if (item.base !== baseName) continue;
+        addAcc(item, baseOct, clef);
+      }
+    }
+  }
+
+  // ── Construir pool según modo ──
+  const useNatural     = (mode==="natural"      || mode==="all");
+  const useSharps      = (mode==="sharp"        || mode==="sharps_flats" || mode==="all");
+  const useFlats       = (mode==="flat"         || mode==="sharps_flats" || mode==="all");
+
+  if (ac.includes("treble")) {
+    if (useNatural) addNaturalsForClef("treble", TREBLE_SET);
+    if (useSharps)  addAccidentalsForClef("treble", SHARPS);
+    if (useFlats)   addAccidentalsForClef("treble", FLATS);
   }
   if (ac.includes("bass")) {
-    for (const s of BASS_SET) {
-      const [n,o] = parsePair(s);
-      if (aSet.has(o)) pool.add(JSON.stringify([n,o,"bass"]));
-      else if (o===0 && aSet.has(1)) pool.add(JSON.stringify([n,o,"bass"]));
-    }
+    if (useNatural) addNaturalsForClef("bass", BASS_SET);
+    if (useSharps)  addAccidentalsForClef("bass", SHARPS);
+    if (useFlats)   addAccidentalsForClef("bass", FLATS);
   }
+
   return [...pool].map(x=>JSON.parse(x));
+  // Formato de cada item: [name, octave, clef, type, baseName]
+  // type: "natural"|"#"|"♭"
+  // baseName: null para naturales, nombre de la base para accidentales
+}
+
+// ── Selección de modo de accidentales ────────────────────────────────────────
+function selectAcc(mode) {
+  state.accMode = mode;
+  invalidatePool();
+  // Actualizar UI radio rows
+  document.querySelectorAll(".acc-radio-row").forEach(row => {
+    row.classList.toggle("selected", row.dataset.acc === mode);
+  });
+  // Actualizar hint pedagógico
+  const hints = {
+    natural:      "💡 Etapa 1 — Domina las notas naturales primero",
+    sharp:        "💡 Etapa 2 — Cada # sube medio tono: la tecla negra a la derecha de la natural",
+    flat:         "💡 Etapa 3 — Cada ♭ baja medio tono: la tecla negra a la izquierda de la natural",
+    sharps_flats: "💡 Etapa 4 — # y ♭ mezclados: misma tecla, dos nombres (enarmonía)",
+    all:          "💡 Modo avanzado — Naturales, sostenidos y bemoles, todo aleatorio",
+  };
+  DOM.accHint.textContent = hints[mode] || "";
+  // Resetear cola al cambiar modo
+  state.queue.reset();
+  updateCfgWarn();
 }
 
 // ── Banner rotation ──────────────────────────────────────────────────────────
 function refreshBanner() {
-  const iframe = document.getElementById("aads-iframe");
+  const iframe = DOM.aadsIframe;
   if (!iframe) return;
-  // Forzar recarga del iframe cambiando el src con un timestamp de cache-bust
-  const base = "//ad.a-ads.com/2442121/?size=300x250&title_color=ff0000";
-  iframe.src = base + "&_=" + Date.now();
+  iframe.src = "//ad.a-ads.com/2442121/?size=300x250&title_color=ff0000&_=" + Date.now();
 }
 
-function newNote() {
+// ── Texto de pista (enarmónico incluido) ──────────────────────────────────────
+function getHintText() {
+  if (!state.currentNote) return "";
+  const [n, o] = state.currentNote;
+  let txt = `Respuesta:  ${n}${o}`;
+  if (state.currentAccType && state.currentAccType !== "natural") {
+    // Si es sostenido buscar el enarmónico bemol, y viceversa
+    const _enh = state.currentAccType === "#"
+      ? FLATS.find(f  => ACC_SEMITONE[f.acc]  === ACC_SEMITONE[n])
+      : SHARPS.find(s => ACC_SEMITONE[s.acc]  === ACC_SEMITONE[n]);
+    if (_enh) txt += `  (= ${_enh.acc}${o})`;
+  }
+  return txt;
+}
+
+function newNote(skipRender=false) {
   const pool = getNotesPool();
   if (!pool.length) return;
   const item = state.queue.next(pool);
-  state.currentNote  = [item[0], item[1]];
-  state.currentClef  = item[2];
+  // item: [name, octave, clef, type, baseName]
+  state.currentNote     = [item[0], item[1]];
+  state.currentClef     = item[2];
+  state.currentAccType  = item[3] || "natural"; // "#", "♭", o "natural"
+  state.currentBaseName = item[4] || null;       // nota base para accidentales
   state.result       = null;
   state.wrongNote    = null;
   state.showAnswer   = false;
   state.lastAnswer   = null;
   hideResultPanel();
   updateHintBox();
-  render();
+  if (!skipRender) render();
+}
+
+// ── Cache de elementos DOM frecuentes ────────────────────────────────────────
+// Se inicializan después de que el DOM esté cargado (este script está al final del body)
+const DOM = {
+  canvas:       null,  // se asigna en init
+  poolInfo:     null,
+  hintBox:      null,
+  resultPanel:  null,
+  resultMain:   null,
+  resultNote:   null,
+  resultPlayed: null,
+  btnHint:      null,
+  clefLabel:    null,
+  svScore:      null,
+  svPct:        null,
+  svStreak:     null,
+  svBest:       null,
+  historyRow:   null,
+  aadsIframe:   null,
+  accHint:      null,
+  cfgWarn:      null,
+  cfgClefsActive: null,
+  octGrid:      null,
+  staffArea:    null,
+};
+function initDOM() {
+  DOM.canvas       = document.getElementById("main-canvas");
+  DOM.poolInfo     = document.getElementById("pool-info");
+  DOM.hintBox      = document.getElementById("hint-box");
+  DOM.resultPanel  = document.getElementById("result-panel");
+  DOM.resultMain   = document.getElementById("result-main");
+  DOM.resultNote   = document.getElementById("result-note");
+  DOM.resultPlayed = document.getElementById("result-played");
+  DOM.btnHint      = document.getElementById("btn-hint");
+  DOM.clefLabel    = document.getElementById("clef-label");
+  DOM.svScore      = document.getElementById("sv-score");
+  DOM.svPct        = document.getElementById("sv-pct");
+  DOM.svStreak     = document.getElementById("sv-streak");
+  DOM.svBest       = document.getElementById("sv-best");
+  DOM.historyRow   = document.getElementById("history-row");
+  DOM.aadsIframe   = document.getElementById("aads-iframe");
+  DOM.accHint      = document.getElementById("acc-hint");
+  DOM.cfgWarn      = document.getElementById("cfg-warn");
+  DOM.cfgClefsActive = document.getElementById("cfg-clefs-active");
+  DOM.octGrid      = document.getElementById("oct-grid");
+  DOM.staffArea    = document.getElementById("staff-area");
+}
+// Para accidentales: Do# y Re♭ son la misma tecla física → se compara por semitono
+function isCorrectKey(clicked, currentNote, accType) {
+  const [cn, co] = currentNote;
+  const [kn, ko] = clicked;
+  if (ko !== co) return false;
+  if (accType === "natural") return kn === cn;
+  const targetSemi  = ACC_SEMITONE[cn];
+  const clickedSemi = (NOTE_SEMITONE[kn] !== undefined)
+    ? NOTE_SEMITONE[kn]
+    : (ACC_SEMITONE[kn] !== undefined ? ACC_SEMITONE[kn] : -1);
+  return targetSemi === clickedSemi;
 }
 
 function buildKeys() {
@@ -1234,8 +1580,8 @@ function handlePianoClick(canvasX, canvasY) {
   if (state.result !== null) return;
   if (!state.currentNote) return;
 
-  const canvas  = document.getElementById("main-canvas");
-  const pianoY  = calcPianoY(canvas);
+  const canvas  = DOM.canvas;
+  const { pianoY } = calcLayout(canvas);
   const pianoH  = 108;
 
   // Teclas negras primero
@@ -1262,19 +1608,20 @@ function handlePianoClick(canvasX, canvasY) {
   state.attemptCount++;
   // Rotar banner cada 10 intentos
   if (state.attemptCount % 10 === 0) refreshBanner();
-  if (clicked[0]===state.currentNote[0] && clicked[1]===state.currentNote[1]) {
+
+  if (isCorrectKey(clicked, state.currentNote, state.currentAccType)) {
     state.result    = "correct";
     state.score++;
     state.streak++;
     state.bestStreak = Math.max(state.streak, state.bestStreak);
-    state.history.push(["✓", state.currentNote, state.currentClef]);
+    state.history.push(["✓", state.currentNote, state.currentClef, state.currentAccType]);
     if (state.history.length>200) state.history=state.history.slice(-200);
     playNote(state.currentNote[0], state.currentNote[1]);
   } else {
     state.result   = "wrong";
     state.streak   = 0;
     state.wrongNote= clicked;
-    state.history.push(["✗", state.currentNote, state.currentClef]);
+    state.history.push(["✗", state.currentNote, state.currentClef, state.currentAccType]);
     if (state.history.length>200) state.history=state.history.slice(-200);
     playError();
   }
@@ -1285,25 +1632,26 @@ function handlePianoClick(canvasX, canvasY) {
   render();
 }
 
-// ── Cálculo de coordenadas ────────────────────────────────────────────────────
-function calcPianoY(canvas) {
+// ── Cálculo de coordenadas — devuelve {pianoY, h1, h2, cy} ───────────────────
+function calcLayout(canvas) {
   const trebleNote = state.currentClef==="treble" ? state.currentNote : null;
   const bassNote   = state.currentClef==="bass"   ? state.currentNote : null;
-  const trebleH = staffSurfaceHeight(trebleNote, "treble");
-  const bassH   = staffSurfaceHeight(bassNote,   "bass");
-  const grandH  = trebleH + 2 + bassH;
+  const h1 = staffSurfaceHeight(trebleNote, "treble");
+  const h2 = staffSurfaceHeight(bassNote,   "bass");
+  const grandH  = h1 + 2 + h2;
   const pianoH  = 108;
   const margin  = 8;
   const maxBottom = canvas.height - pianoH - margin;
   let cy = 0;
   if (cy + grandH > maxBottom) cy = Math.max(0, maxBottom - grandH);
-  return cy + grandH + margin;
+  const pianoY = cy + grandH + margin;
+  return { pianoY, h1, h2, cy, trebleNote, bassNote };
 }
 
 // ── Render principal ──────────────────────────────────────────────────────────
 function render() {
   if (state.screen!=="game") return;
-  const canvas = document.getElementById("main-canvas");
+  const canvas = DOM.canvas;
   const ctx    = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -1312,101 +1660,111 @@ function render() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   const pianoH  = 108;
-  const pianoY  = calcPianoY(canvas);
+  const { pianoY, h1, h2, cy, trebleNote, bassNote } = calcLayout(canvas);
 
   // Grand Staff
-  const maxBottom = pianoY - 8;
-  const trebleNote= state.currentClef==="treble" ? state.currentNote : null;
-  const bassNote  = state.currentClef==="bass"   ? state.currentNote : null;
-  const h1 = staffSurfaceHeight(trebleNote, "treble");
-  const h2 = staffSurfaceHeight(bassNote,   "bass");
-  const totalH = h1 + 2 + h2;
-  let cy = 0;
-  if (cy + totalH > maxBottom) cy = Math.max(0, maxBottom - totalH);
+  const activeClefs = getActiveClefs();
 
   drawStaff(ctx, 0, cy, "treble", trebleNote,
     state.result && trebleNote ? state.result : null,
-    !getActiveClefs().includes("treble"), state.showLabels);
+    !activeClefs.includes("treble"), state.showLabels, canvas.width);
   drawStaff(ctx, 0, cy+h1+2, "bass", bassNote,
     state.result && bassNote ? state.result : null,
-    !getActiveClefs().includes("bass"), state.showLabels);
+    !activeClefs.includes("bass"), state.showLabels, canvas.width);
 
   // Pool info
   const pool = getNotesPool();
-  const ac   = getActiveClefs().join(", ");
-  const poolInfoEl = document.getElementById("pool-info");
-  poolInfoEl.textContent = `Claves: ${ac}   Octavas: [${[...state.activeOctaves].sort((a,b)=>a-b)}]   Pool: ${pool.length} notas`;
+  const clefNames = {treble:"Sol", bass:"Fa"};
+  const ac   = activeClefs.map(c=>clefNames[c]||c).join(", ");
+  const accLabels = {natural:"naturales",sharp:"sostenidos #",flat:"bemoles ♭",sharps_flats:"# y ♭",all:"todos"};
+  const accLbl = accLabels[state.accMode] || "naturales";
+  DOM.poolInfo.textContent =
+    `Claves: ${ac}   Octavas: [${[...state.activeOctaves].sort((a,b)=>a-b)}]   Notas: ${accLbl}   Pool: ${pool.length}`;
 
   // Hint box
   if (state.showAnswer && state.currentNote) {
-    const hb = document.getElementById("hint-box");
-    hb.textContent = `Respuesta:  ${state.currentNote[0]}${state.currentNote[1]}`;
-    hb.style.display = "block";
+    DOM.hintBox.textContent = getHintText();
+    DOM.hintBox.style.display = "block";
   }
 
-  // Piano
+  // Piano — para accidentales el highlight usa el nombre canónico # del piano
+  let pianoHighlight = null;
+  if (state.result==="correct" && state.currentNote) {
+    if (state.currentAccType === "natural" || !state.currentAccType) {
+      pianoHighlight = state.currentNote;
+    } else {
+      const targetSemi = ACC_SEMITONE[state.currentNote[0]];
+      const sharpEntry = SHARPS.find(s=>ACC_SEMITONE[s.acc]===targetSemi);
+      pianoHighlight = sharpEntry ? [sharpEntry.acc, state.currentNote[1]] : state.currentNote;
+    }
+  }
   drawPiano(ctx, state.keys, pianoY, pianoH,
-    state.result==="correct" ? state.currentNote : null,
+    pianoHighlight,
     state.wrongNote,
     state.showLabels);
+}
+
+// ── Etiqueta de tecla tocada: convierte nombre # a ♭ si el modo es bemol ───────
+function playedKeyLabel(kn, ko) {
+  if (state.currentAccType === "♭" && ACC_SEMITONE[kn] !== undefined) {
+    const flat = FLATS.find(f => ACC_SEMITONE[f.acc] === ACC_SEMITONE[kn]);
+    if (flat) return `${flat.acc}${ko}`;
+  }
+  return `${kn}${ko}`;
 }
 
 // ── UI helpers ────────────────────────────────────────────────────────────────
 function showResultPanel() {
   if (!state.currentNote) return;
-  const panel = document.getElementById("result-panel");
+  const panel = DOM.resultPanel;
   const [n, o]= state.currentNote;
   panel.style.display = "block";
-  // Hide hint button while result is showing (matches Python behavior)
-  document.getElementById("btn-hint").style.display = "none";
-  document.getElementById("hint-box").style.display = "none";
+  DOM.btnHint.style.display = "none";
+  DOM.hintBox.style.display = "none";
+  const displayName = `${n}${o}`;
   if (state.result==="correct") {
     panel.className="";
-    document.getElementById("result-main").style.color = "var(--green)";
-    document.getElementById("result-main").textContent = `✓ ¡Correcto!   ${n}${o}`;
-    document.getElementById("result-note").style.color = "var(--green)";
-    document.getElementById("result-note").textContent = `${n}${o}`;
-    document.getElementById("result-played").textContent = "";
+    DOM.resultMain.style.color = "var(--green)";
+    DOM.resultMain.textContent = `✓ ¡Correcto!   ${displayName}`;
+    DOM.resultNote.style.color = "var(--green)";
+    DOM.resultNote.textContent = displayName;
+    DOM.resultPlayed.textContent = "";
   } else {
     panel.className="wrong";
-    document.getElementById("result-main").style.color = "var(--red)";
-    document.getElementById("result-main").textContent = `✗ La nota era:   ${n}${o}`;
-    document.getElementById("result-note").style.color = "var(--red)";
-    document.getElementById("result-note").textContent = `${n}${o}`;
+    DOM.resultMain.style.color = "var(--red)";
+    DOM.resultMain.textContent = `✗ La nota era:   ${displayName}`;
+    DOM.resultNote.style.color = "var(--red)";
+    DOM.resultNote.textContent = displayName;
     if (state.lastAnswer) {
-      document.getElementById("result-played").textContent =
-        `Tocaste: ${state.lastAnswer[0]}${state.lastAnswer[1]}`;
+      DOM.resultPlayed.textContent =
+        `Tocaste: ${playedKeyLabel(state.lastAnswer[0], state.lastAnswer[1])}`;
     }
   }
 }
 
 function hideResultPanel() {
-  document.getElementById("result-panel").style.display = "none";
-  // Restore hint button
-  document.getElementById("btn-hint").style.display = "block";
+  DOM.resultPanel.style.display = "none";
+  DOM.btnHint.style.display = "block";
 }
 
 function updateHintBox() {
-  const hb = document.getElementById("hint-box");
-  hb.style.display = "none";
+  DOM.hintBox.style.display = "none";
 }
 
 function updateStats() {
   const pct = state.total ? Math.round(state.score/state.total*100) : 0;
-  document.getElementById("sv-score").textContent  = `${state.score}/${state.total}`;
-  document.getElementById("sv-pct").textContent    = `${pct}%`;
-  document.getElementById("sv-streak").textContent = `${state.streak}`;
-  document.getElementById("sv-best").textContent   = `${state.bestStreak}`;
+  DOM.svScore.textContent  = `${state.score}/${state.total}`;
+  DOM.svPct.textContent    = `${pct}%`;
+  DOM.svStreak.textContent = `${state.streak}`;
+  DOM.svBest.textContent   = `${state.bestStreak}`;
 }
 
 function updateHistoryRow() {
-  const row = document.getElementById("history-row");
-  // keep label
+  const row = DOM.historyRow;
   const lbl = row.querySelector(".hist-lbl");
   row.innerHTML="";
   row.appendChild(lbl);
-  const last19 = state.history.slice(-19);
-  for (const [sym,[n,o]] of last19) {
+  for (const [sym,[n,o]] of state.history.slice(-19)) {
     const chip = document.createElement("span");
     chip.className = "hist-chip " + (sym==="✓"?"ok":"err");
     chip.textContent = `${sym}${n}${o}`;
@@ -1415,27 +1773,19 @@ function updateHistoryRow() {
 }
 
 function updateClefLabel() {
-  const el = document.getElementById("clef-label");
-  if (state.currentClef==="treble") el.textContent="🎵 Clave de Sol";
-  else                               el.textContent="🎵 Clave de Fa";
+  if (state.currentClef==="bass") DOM.clefLabel.textContent="🎵 Clave de Fa";
+  else                             DOM.clefLabel.textContent="🎵 Clave de Sol";
 }
 
 
 // ── Resize canvas ─────────────────────────────────────────────────────────────
 function resizeCanvas() {
-  const canvas = document.getElementById("main-canvas");
-  const area   = document.getElementById("staff-area");
-  const W      = area.clientWidth || 700;
+  const canvas = DOM.canvas;
+  const W      = DOM.staffArea.clientWidth || 700;
   const pianoH = 108;
   canvas.width  = W;
-  // Height: grand staff (approx 240) + gap + piano + small margin
-  // Height: grand staff for both clefs + piano + some padding
-  const trebleNote2 = state.currentClef==="treble" ? state.currentNote : null;
-  const bassNote2   = state.currentClef==="bass"   ? state.currentNote : null;
-  const maxStaffH = staffSurfaceHeight(trebleNote2, "treble") + 2 +
-                    staffSurfaceHeight(bassNote2,   "bass") + 20;
-  canvas.height = Math.max(440, maxStaffH + pianoH + 30);
-  // rebuild keys for new width
+  const { h1, h2 } = calcLayout(canvas);
+  canvas.height = Math.max(440, h1 + 2 + h2 + 20 + pianoH + 30);
   if (state.screen==="game") {
     buildKeys();
     if (state.currentNote) render();
@@ -1446,7 +1796,7 @@ function resizeCanvas() {
 // CONFIG SCREEN LOGIC
 // ══════════════════════════════════════════════════════════════════════════════
 function buildOctGrid() {
-  const grid = document.getElementById("oct-grid");
+  const grid = DOM.octGrid;
   grid.innerHTML = "";
   const s = [...state.activeOctaves].sort((a,b)=>a-b);
   for (const oct of state.availOctaves) {
@@ -1464,12 +1814,17 @@ function buildOctGrid() {
     else if (!canAdd)               { btn.classList.add("faded"); btn.disabled=true; }
 
     const zone = clefsForOctave(oct).map(c=>c==="treble"?"Sol":"Fa").join("/") || "—";
-    btn.innerHTML = `Oct ${oct}<span class="oct-zone">${zone}</span>`;
+    // Notas extra que pertenecen prácticamente a esta octava en la app
+    const extraNote = oct===1 ? "<span class='oct-extra'>Si1 · solo Si♭</span>"
+                   : oct===7 ? "<span class='oct-extra'>Do7 · solo Do#</span>"
+                   : "";
+    btn.innerHTML = `Oct ${oct}${extraNote}<span class="oct-zone">${zone}</span>`;
 
     btn.onclick = () => {
       if (noNotes) return;
       state.activeOctaves = normalizeOctaveSelection(state.activeOctaves, oct);
       state.queue.reset();
+      invalidatePool();
       buildOctGrid();
       updateCfgClefs();
       updateCfgWarn();
@@ -1480,14 +1835,14 @@ function buildOctGrid() {
 
 function updateCfgClefs() {
   const ac = getActiveClefs();
-  const el = document.getElementById("cfg-clefs-active");
+  const el = DOM.cfgClefsActive;
   if (!ac.length) { el.textContent="Sin octavas seleccionadas"; return; }
   const names = {treble:"Clave de Sol", bass:"Clave de Fa"};
   el.textContent = "Claves activas: " + ac.map(c=>names[c]).join(" + ");
 }
 
 function updateCfgWarn() {
-  const warn = document.getElementById("cfg-warn");
+  const warn = DOM.cfgWarn;
   const btn  = document.getElementById("btn-start");
   const pool = getNotesPool();
   if (!state.activeOctaves.length)  warn.textContent="⚠ Selecciona al menos una octava para comenzar";
@@ -1519,13 +1874,11 @@ function showGame() {
   if (state.cameFromConfig) { refreshBanner(); state.cameFromConfig = false; }
   // Build keys first with a rough canvas width, then newNote sets currentNote,
   // then resizeCanvas recalculates with the real note height.
-  const area = document.getElementById("staff-area");
-  const canvas = document.getElementById("main-canvas");
-  canvas.width = area.clientWidth || 700;
+  const canvas = DOM.canvas;
+  canvas.width = DOM.staffArea.clientWidth || 700;
   canvas.height = 520; // initial safe height
-  buildKeys();
-  newNote();           // sets currentNote -> needed for correct height calc
-  resizeCanvas();      // recalculate height now that we know the note
+  newNote(true);     // setea currentNote sin renderizar (canvas aún no tiene altura final)
+  resizeCanvas();    // calcula altura correcta → buildKeys + render
   updateClefLabel();
   updateStats();
 }
@@ -1544,25 +1897,23 @@ document.getElementById("btn-config").onclick = () => showConfig(true);
 document.getElementById("btn-hint").onclick = () => {
   if (state.result!==null) return;
   state.showAnswer = !state.showAnswer;
-  const hb = document.getElementById("hint-box");
   if (state.showAnswer && state.currentNote) {
-    hb.textContent = `Respuesta:  ${state.currentNote[0]}${state.currentNote[1]}`;
-    hb.style.display = "block";
+    DOM.hintBox.textContent = getHintText();
+    DOM.hintBox.style.display = "block";
   } else {
-    hb.style.display = "none";
+    DOM.hintBox.style.display = "none";
   }
 };
 
-document.getElementById("btn-labels").onclick = () => {
+document.getElementById("btn-labels").onclick = function() {
   state.showLabels = !state.showLabels;
-  document.getElementById("btn-labels").textContent =
-    state.showLabels ? "👁 Etiquetas: ON" : "👁 Etiquetas: OFF";
+  this.textContent = state.showLabels ? "👁 Etiquetas: ON" : "👁 Etiquetas: OFF";
   render();
 };
 
 // Click en canvas
 document.getElementById("main-canvas").addEventListener("click", (e) => {
-  const canvas = document.getElementById("main-canvas");
+  const canvas = DOM.canvas;
   const rect   = canvas.getBoundingClientRect();
   const scaleX = canvas.width  / rect.width;
   const scaleY = canvas.height / rect.height;
@@ -1591,23 +1942,26 @@ document.addEventListener("keydown", (e) => {
   if (e.key.toLowerCase()==="h") {
     if (state.result===null) {
       state.showAnswer = !state.showAnswer;
-      const hb=document.getElementById("hint-box");
       if (state.showAnswer && state.currentNote) {
-        hb.textContent=`Respuesta:  ${state.currentNote[0]}${state.currentNote[1]}`;
-        hb.style.display="block";
-      } else { hb.style.display="none"; }
+        DOM.hintBox.textContent = getHintText();
+        DOM.hintBox.style.display = "block";
+      } else { DOM.hintBox.style.display = "none"; }
     }
   }
 });
 
-// Resize
+// Resize — con debounce para evitar llamadas excesivas
+let _resizeTimer = null;
 window.addEventListener("resize", () => {
-  if (state.screen==="game") resizeCanvas();
+  if (state.screen !== "game") return;
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(resizeCanvas, 80);
 });
 
 // ══════════════════════════════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════════════════════════════
+initDOM();
 showConfig();
 </script>
 </body>

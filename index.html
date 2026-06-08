@@ -25,7 +25,7 @@
 <meta property="og:image:height" content="630"/>
 
 <!-- ── TWITTER CARD ── -->
-<meta name="twitter:card"        content="summary"/>
+<meta name="twitter:card"        content="summary_large_image"/>
 <meta name="twitter:title"       content="Lectura de Notas de Piano — Solfeo Online Gratis"/>
 <meta name="twitter:description" content="Aprende a leer notas musicales en el piano. Ejercicios interactivos con pentagrama real y piano de 88 teclas."/>
 <meta name="twitter:image"       content="https://rosegarden29.github.io/piano-note-trainer/og-image.png"/>
@@ -1536,6 +1536,10 @@ const DOM = {
   cfgClefsActive: null,
   octGrid:      null,
   staffArea:    null,
+  configScreen: null,
+  gameScreen:   null,
+  headerStats:  null,
+  btnStart:     null,
 };
 function initDOM() {
   DOM.canvas       = document.getElementById("main-canvas");
@@ -1558,6 +1562,10 @@ function initDOM() {
   DOM.cfgClefsActive = document.getElementById("cfg-clefs-active");
   DOM.octGrid      = document.getElementById("oct-grid");
   DOM.staffArea    = document.getElementById("staff-area");
+  DOM.configScreen = document.getElementById("config-screen");
+  DOM.gameScreen   = document.getElementById("game-screen");
+  DOM.headerStats  = document.getElementById("header-stats");
+  DOM.btnStart     = document.getElementById("btn-start");
 }
 // Para accidentales: Do# y Re♭ son la misma tecla física → se compara por semitono
 function isCorrectKey(clicked, currentNote, accType) {
@@ -1843,12 +1851,11 @@ function updateCfgClefs() {
 
 function updateCfgWarn() {
   const warn = DOM.cfgWarn;
-  const btn  = document.getElementById("btn-start");
   const pool = getNotesPool();
   if (!state.activeOctaves.length)  warn.textContent="⚠ Selecciona al menos una octava para comenzar";
   else if (!pool.length)            warn.textContent="⚠ Las octavas no producen notas en rangos válidos";
   else                              warn.textContent="";
-  btn.disabled = !pool.length;
+  DOM.btnStart.disabled = !pool.length;
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -1857,9 +1864,9 @@ function updateCfgWarn() {
 function showConfig(fromGame) {
   if (fromGame) state.cameFromConfig = true;
   state.screen = "config";
-  document.getElementById("config-screen").style.display = "flex";
-  document.getElementById("game-screen").style.display   = "none";
-  document.getElementById("header-stats").style.display  = "none";
+  DOM.configScreen.style.display = "flex";
+  DOM.gameScreen.style.display   = "none";
+  DOM.headerStats.style.display  = "none";
   buildOctGrid();
   updateCfgClefs();
   updateCfgWarn();
@@ -1867,9 +1874,9 @@ function showConfig(fromGame) {
 
 function showGame() {
   state.screen = "game";
-  document.getElementById("config-screen").style.display = "none";
-  document.getElementById("game-screen").style.display   = "block";
-  document.getElementById("header-stats").style.display  = "flex";
+  DOM.configScreen.style.display = "none";
+  DOM.gameScreen.style.display   = "block";
+  DOM.headerStats.style.display  = "flex";
   // Rotar banner si viene de configuración
   if (state.cameFromConfig) { refreshBanner(); state.cameFromConfig = false; }
   // Build keys first with a rough canvas width, then newNote sets currentNote,
@@ -1889,6 +1896,7 @@ function showGame() {
 document.getElementById("btn-start").onclick = () => {
   if (!getNotesPool().length) return;
   state.queue.reset();
+  invalidatePool();
   showGame();
 };
 
@@ -1934,6 +1942,8 @@ document.getElementById("main-canvas").addEventListener("click", (e) => {
 // Teclado
 document.addEventListener("keydown", (e) => {
   if (state.screen==="config") return;
+  // Despertar AudioContext en cualquier interacción de teclado
+  if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
   if (e.key==="Escape") { showConfig(true); return; }
   if (e.key==="ArrowRight" || e.key===" ") {
     e.preventDefault();

@@ -881,36 +881,72 @@ class AlternatingQueue {
 
   _refill(clef, pool) {
     const items = pool.filter(x=>x[2]===clef);
-    if(!items.length){this.decks[clef]=[]; return;}
-    // Agrupar por posición staff (bucket cada 3 semiespacios)
-    // Para accidentales usamos la nota BASE para calcular la posición (item[4] || item[0])
-    const groups={};
-    for(const item of items){
-      const staffName = item[4] || item[0]; // base para accidentales, nombre para naturales
-      const step=noteToStaffPos(staffName,item[1],clef);
-      const bk=Math.floor(step/3);
-      if(!groups[bk]) groups[bk]=[];
-      groups[bk].push(item);
+    if (!items.length) { this.decks[clef]=[]; return; }
+
+    // ── Balanceo por categoría de tipo ────────────────────────────────────────
+    // En modo 'all' o 'sharps_flats' hay varias categorías con distinto número
+    // de notas (ej. 7 naturales, 5 sostenidos, 5 bemoles).
+    // Sin balanceo, los accidentales combinados (10/17=59%) superan a las
+    // naturales (7/17=41%), lo que el usuario percibe como sesgo hacia accidentales.
+    // Solución: construir el deck intercalando categorías en igual proporción.
+    const byType = {};
+    for (const item of items) {
+      const t = item[3]; // 'natural', '#' o '♭'
+      if (!byType[t]) byType[t] = [];
+      byType[t].push(item);
     }
-    const keys=this._shuffle(Object.keys(groups));
-    for(const k of keys) this._shuffle(groups[k]);
-    // intercalar round-robin
-    const result=[];
-    const iters=keys.map(k=>[...groups[k]]);
-    const ptrs=keys.map(()=>0);
-    let active=keys.map((_,i)=>i);
-    while(active.length){
-      this._shuffle(active);
-      const next=[];
-      for(const idx of active){
-        if(ptrs[idx]<iters[idx].length){ result.push(iters[idx][ptrs[idx]++]); next.push(idx); }
+    const types = Object.keys(byType);
+
+    if (types.length <= 1) {
+      // Solo un tipo: usar lógica de grupos posicionales original
+      const groups = {};
+      for (const item of items) {
+        const staffName = item[4] || item[0];
+        const step = noteToStaffPos(staffName, item[1], clef);
+        const bk = Math.floor(step/3);
+        if (!groups[bk]) groups[bk] = [];
+        groups[bk].push(item);
       }
-      active=next;
+      const keys = this._shuffle(Object.keys(groups));
+      for (const k of keys) this._shuffle(groups[k]);
+      const result = [];
+      const iters = keys.map(k=>[...groups[k]]);
+      const ptrs  = keys.map(()=>0);
+      let active  = keys.map((_,i)=>i);
+      while (active.length) {
+        this._shuffle(active);
+        const next = [];
+        for (const idx of active) {
+          if (ptrs[idx]<iters[idx].length){ result.push(iters[idx][ptrs[idx]++]); next.push(idx); }
+        }
+        active = next;
+      }
+      if (this.lastItem && this.lastItem[2]===clef && result.length &&
+          JSON.stringify(result[0])===JSON.stringify(this.lastItem))
+        result.push(result.shift());
+      this.decks[clef] = result;
+      return;
     }
-    // Evitar repetición inmediata
-    if(this.lastItem && this.lastItem[2]===clef && result.length && JSON.stringify(result[0])===JSON.stringify(this.lastItem))
-      result.push(result.shift());
-    this.decks[clef]=result;
+
+    // Múltiples tipos: normalizar pool por categoría para distribución uniforme.
+    // Problema: 7 naturales + 5 sostenidos + 5 bemoles → natural=41%, acc=59%.
+    // Solución: expandir cada categoría menor hasta igualar la mayor,
+    // repitiendo notas cíclicamente. Resultado: ~33% por tipo siempre.
+    for (const t of types) this._shuffle(byType[t]);
+
+    const maxLen = Math.max(...types.map(t=>byType[t].length));
+    const normalized = [];
+    for (const t of types) {
+      const src = byType[t];
+      for (let i=0; i<maxLen; i++) normalized.push(src[i % src.length]);
+    }
+    this._shuffle(normalized);
+
+    if (this.lastItem && this.lastItem[2]===clef && normalized.length &&
+        JSON.stringify(normalized[0])===JSON.stringify(this.lastItem))
+      normalized.push(normalized.shift());
+
+    this.decks[clef] = normalized;
   }
 
   next(pool) {
